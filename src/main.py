@@ -3,17 +3,18 @@ import logging
 import requests
 import json
 import time
+import os
 
 
 class Main:
     def __init__(self):
         self._hub_connection = None
-        self.HOST = None  # Setup your host here
-        self.TOKEN = None  # Setup your token here
-        self.TICKETS = None  # Setup your tickets here
-        self.T_MAX = None  # Setup your max temperature here
-        self.T_MIN = None  # Setup your min temperature here
-        self.DATABASE = None  # Setup your database here
+        self.HOST = os.environ.get('OXYGEN_HOST', NULL)  # Setup your host here
+        self.TOKEN = os.environ.get('OXYGEN_TOKEN', NULL)  # Setup your token here
+        self.TICKETS = os.environ.get('OXYGEN_TICKETS', NULL)  # Setup your tickets here
+        self.T_MAX = os.environ.get('OXYGEN_T_MAX', NULL)  # Setup your max temperature here
+        self.T_MIN = os.environ.get('OXYGEN_T_MIN', NULL)  # Setup your min temperature here
+        self.DATABASE = os.environ.get('OXYGEN_DATABASE', NULL)  # Setup your database here
 
     def __del__(self):
         if self._hub_connection != None:
