@@ -1,0 +1,8 @@
+[MESSAGES CONTROL]
+# C0103: contant name style
+# C0116: docstring everywhere
+# W0612: unused var (remove after TODO code is done)
+# W0613: unused args
+# W0718: Broad exception caught
+# W0719: Broad exception raised
+disable=C0103,C0116,W0612,W0613,W0718,W0719

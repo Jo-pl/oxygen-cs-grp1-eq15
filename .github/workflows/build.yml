@@ -1,0 +1,29 @@
+name: Build and test
+
+on:
+- push
+- pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      MYSQL_USER: root
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_DB: oxygen
+      # MySQL picks up MYSQL_PWD
+      MYSQL_PWD: root
+      MYSQL_PW: root
+      OXYGEN_TOKEN: Y4XFkJZ4pG
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup MySQL
+      run: |
+        # https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2004-Readme.md#mysql
+        sudo systemctl start mysql.service
+        mysql -u $MYSQL_USER < <(echo "CREATE DATABASE oxygen; USE oxygen; CREATE TABLE snapshots (snapshottime datetime not null, backlog int not null, todo int not null, inprogress int not null, inreview int not null, done int not null);")
+    - run: pipenv install
+    - run: pipenv run lint
+    - run: pipenv run test
