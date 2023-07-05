@@ -1,1 +1,15 @@
-## To implement
+repos:
+#- repo: https://github.com/pycqa/pylint
+#  rev: v2.17.4
+#  hooks:
+#  - id: pylint
+- repo: local
+  hooks:
+  - id: test
+    name: test
+    language: python
+    entry: pipenv run test
+  - id: lint
+    name: lint
+    language: system
+    entry: bash -c "pipenv run lint"

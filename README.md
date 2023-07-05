@@ -11,7 +11,7 @@ This application uses `pipenv`, a tool that aims to bring the best of all packag
 ## Requierements
 
 - Python 3.8+
-- pipenv
+- pip
 
 ## Getting Started
 
@@ -25,7 +25,10 @@ cd log680
 2. Install the project's dependencies :
 
 ```
+pip install --user pipenv
+pip install --user pre-commit
 pipenv install
+pre-commit install
 ```
 
 ## Setup
@@ -45,6 +48,37 @@ After setup, you can start the program with the following command:
 
 ```
 pipenv run strart
+```
+
+### Running within Docker
+
+Requires Docker 20.04 and above.
+
+Build the Docker image:
+
+```shell
+# From the root of the repository:
+docker build . -t oxygen-cs
+docker run oxygen-cs
+```
+
+Manage the container:
+
+```shell
+# Show containers
+docker ps -a
+
+# Close the container
+docker stop [IMAGE]
+
+# Start the container again
+docker start [IMAGE]
+
+# Remove the container (must be stopped first)
+docker rm [IMAGE]
+
+# Remove the image (all containers based on the image must be removed first)
+docker image rm oxygen-cs
 ```
 
 ## Logging
