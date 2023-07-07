@@ -9,7 +9,10 @@ repos:
     name: test
     language: python
     entry: pipenv run test
+    pass_filenames: false
+    verbose: true
   - id: lint
     name: lint
     language: system
-    entry: bash -c "pipenv run lint"
+    entry: pipenv run lint
+    pass_filenames: false
