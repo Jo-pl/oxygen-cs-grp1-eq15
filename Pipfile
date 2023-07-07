@@ -8,6 +8,7 @@ requests = "*"
 signalrcore = "*"
 pylint = "*"
 pytest = "*"
+pymysql = "*"
 
 [dev-packages]
 
