@@ -5,5 +5,4 @@
 # W0613: unused args
 # W0718: Broad exception caught
 # W0719: Broad exception raised
-# R0902: Too many attributes
-disable=C0103,C0116,W0612,W0613,W0718,W0719,R0902
+disable=C0103,C0116,W0612,W0613,W0718,W0719

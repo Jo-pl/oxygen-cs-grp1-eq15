@@ -7,7 +7,6 @@ import os
 import logging
 import requests
 from signalrcore.hub_connection_builder import HubConnectionBuilder
-import pymysql.cursors
 
 class Main:
     """
@@ -21,18 +20,9 @@ class Main:
         self.T_MAX = os.environ.get('OXYGEN_T_MAX', 25)  # Setup your max temperature here
         self.T_MIN = os.environ.get('OXYGEN_T_MIN', 20)  # Setup your min temperature here
         self.DATABASE = os.environ.get('OXYGEN_DATABASE', 'localhost')  # Setup your database here
-        self.DB_USER = os.environ.get('OXYGEN_DB_USER', 'oxygen')  # Setup your database here
-        self.DB_PW = os.environ.get('OXYGEN_DB_PW', 'oxygen')  # Setup your database here
-        self.DB_NAME = os.environ.get('OXYGEN_DB_NAME', 'oxygen')  # Setup your database here
 
         if self.TOKEN is None:
             raise Exception('Token missing')
-
-        self.connection = pymysql.connect(host=self.DATABASE,
-                                          user=self.DB_USER,
-                                          password=self.DB_PW,
-                                          database=self.DB_NAME,
-                                          cursorclass=pymysql.cursors.DictCursor)
 
     def __del__(self):
         if self._hub_connection is not None:
@@ -93,14 +83,11 @@ class Main:
 
     def send_event_to_database(self, timestamp, event):
         try:
-            with self.connection:
-                with self.connection.cursor() as cursor:
-                    sql = "INSERT INTO sensordata (`data`) VALUES (%s)"
-                    cursor.execute(sql, ('lorem ipsum'))
-
-                self.connection.commit()
+            # To implement
+            pass
         except requests.exceptions.RequestException as e:
-            print(e)
+            # To implement
+            pass
 
 
 if __name__ == "__main__":
