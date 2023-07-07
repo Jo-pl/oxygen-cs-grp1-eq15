@@ -1,0 +1,56 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+    - master
+    - dev
+  pull_request: {}
+
+jobs:
+  build:
+    # 20.04 comes with Python3.8, and using 3.10 caused strange issues
+    runs-on: ubuntu-20.04
+
+    env:
+      MYSQL_USER: root
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_DB: oxygen
+      # MySQL picks up MYSQL_PWD
+      MYSQL_PWD: root
+      MYSQL_PW: root
+      OXYGEN_TOKEN: Y4XFkJZ4pG
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup MySQL
+      run: |
+        # https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2004-Readme.md#mysql
+        sudo systemctl start mysql.service
+        mysql -u $MYSQL_USER < <(echo "CREATE DATABASE oxygen; USE oxygen; CREATE TABLE snapshots (snapshottime datetime not null, backlog int not null, todo int not null, inprogress int not null, inreview int not null, done int not null);")
+
+    - name: Install requirements
+      run: |
+        pip3 install -r requirements.txt
+        pipenv install
+
+    - name: Test
+      run: pipenv run test
+
+    - name: Lint
+      run: pipenv run lint
+
+    - name: Build Docker image
+      run: |
+        docker build . -t grr1/log680-e2023-gr1-eq15-oxygen-cs:latest
+        docker tag grr1/log680-e2023-gr1-eq15-oxygen-cs:latest grr1/log680-e2023-gr1-eq15-oxygen-cs:${{ github.sha }}
+
+    - name: Push to DockerHub
+      if: ${{ github.ref == 'refs/heads/master' }}
+      env:
+        DOCKER_KEY: ${{ secrets.DOCKER_KEY }}
+      run: |
+        echo "$DOCKER_KEY" | docker login --username grr1 --password-stdin
+        docker push grr1/log680-e2023-gr1-eq15-oxygen-cs:latest
+        docker push grr1/log680-e2023-gr1-eq15-oxygen-cs:${{ github.sha }}
